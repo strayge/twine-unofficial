@@ -100,9 +100,15 @@ class Repository:
                     data_to_send.append((key, item))
         return data_to_send
 
-    def set_certificate_authority(self, cacert: Optional[str]) -> None:
+    def set_certificate_authority(
+        self,
+        cacert: Optional[str],
+        skip_tls_check: bool = False,
+    ) -> None:
         if cacert:
             self.session.verify = cacert
+        elif skip_tls_check:
+            self.session.verify = False
 
     def set_client_certificate(self, clientcert: Optional[str]) -> None:
         if clientcert:
