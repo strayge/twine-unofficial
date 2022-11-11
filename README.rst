@@ -21,9 +21,9 @@ changes:
   rejected PR: `#387 <https://github.com/pypa/twine/issues/387>`_.
 
 - Upload ``--skip-existing`` option now support pre-upload check
-  againts non-default PyPI repositories.
+  against non-default PyPI repositories.
 
-  `#919 <https://github.com/pypa/twine/issues/919>`_
+  Similar ussue: `#919 <https://github.com/pypa/twine/issues/919>`_
 
 - Upload command support ``--fail-on-existing`` option to fail if
   the package already exists on the repository.
