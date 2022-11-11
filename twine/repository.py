@@ -215,6 +215,7 @@ class Repository:
             # without PEP 691 (JSON API) support
 
             from urllib.parse import urlparse
+
             try:
                 from pip._vendor.distlib.locators import Page
             except ImportError:
@@ -229,14 +230,18 @@ class Repository:
                 filenames = self._releases_json_data.get(package.safe_name)
 
             if filenames is None:
-                filenames = set()
+                filenames = {}
                 url = f"{LEGACY_PYPI}simple/{package.safe_name}/"
                 response = self.session.get(url)
                 if response.status_code == 200:
-                    links: List[Tuple[str, str]] = Page(response.text, url).links
+                    links: List[Tuple[str, str]] = Page(
+                        response.text, url
+                    ).links  # type: ignore[no-untyped-call]
                     for url, _ in links:
-                        filename = urlparse(url).path.split('/')[-1]
-                        filenames.add(filename)
+                        filename = urlparse(url).path.split("/")[-1]
+                        # not very usefull structure, but we try to reuse type
+                        # to minimize changes
+                        filenames[filename] = True
                     self._releases_json_data[package.safe_name] = filenames
 
             if package.basefilename in filenames:
