@@ -21,9 +21,9 @@ changes, rejected by the maintainers:
   rejected PR: `#387 <https://github.com/pypa/twine/issues/387>`_.
 
 - Upload ``--skip-existing`` option now support pre-upload check
-  againts non-default PyPI repositories.
+  against non-default PyPI repositories.
 
-  `#919 <https://github.com/pypa/twine/issues/919>`_
+  Similar ussue: `#919 <https://github.com/pypa/twine/issues/919>`_
 
 Installation
 ------------
