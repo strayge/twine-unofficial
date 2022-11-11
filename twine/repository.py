@@ -211,6 +211,36 @@ class Repository:
         # NOTE(sigmavirus24): Not all indices are PyPI and pypi.io doesn't
         # have a similar interface for finding the package versions.
         if not self.url.startswith((LEGACY_PYPI, WAREHOUSE, OLD_WAREHOUSE)):
+            # Fallback to HTML listing for PyPI servers
+            # without PEP 691 (JSON API) support
+
+            from urllib.parse import urlparse
+            try:
+                from pip._vendor.distlib.locators import Page
+            except ImportError:
+                logger.warning(
+                    "pip is not installed, cannot check "
+                    "if package is already uploaded"
+                )
+                return False
+
+            filenames = None
+            if not bypass_cache:
+                filenames = self._releases_json_data.get(package.safe_name)
+
+            if filenames is None:
+                filenames = set()
+                url = f"{LEGACY_PYPI}simple/{package.safe_name}/"
+                response = self.session.get(url)
+                if response.status_code == 200:
+                    links: List[Tuple[str, str]] = Page(response.text, url).links
+                    for url, _ in links:
+                        filename = urlparse(url).path.split('/')[-1]
+                        filenames.add(filename)
+                    self._releases_json_data[package.safe_name] = filenames
+
+            if package.basefilename in filenames:
+                return True
             return False
 
         safe_name = package.safe_name
