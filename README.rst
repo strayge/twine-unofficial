@@ -11,7 +11,7 @@ twine-unofficial
 ================
 
 This is a fork of the `official twine`_ project, with the following
-changes, rejected by the maintainers:
+changes:
 
 - Upload command now supports ``--skip-tls-check`` option to disable
   TLS certificate verification. This is useful for uploading to
@@ -24,6 +24,11 @@ changes, rejected by the maintainers:
   againts non-default PyPI repositories.
 
   `#919 <https://github.com/pypa/twine/issues/919>`_
+
+- Upload command support ``--fail-on-existing`` option to fail if
+  the package already exists on the repository.
+  This is useful for avoid overwriting existing packages, even
+  if PyPI is configured to allow overwriting.
 
 Installation
 ------------
