@@ -55,6 +55,7 @@ class Settings:
         skip_existing: bool = False,
         cacert: Optional[str] = None,
         client_cert: Optional[str] = None,
+        skip_tls_check: bool = False,
         repository_name: str = "pypi",
         repository_url: Optional[str] = None,
         verbose: bool = False,
@@ -93,6 +94,9 @@ class Settings:
             The path to the client certificate used to perform authentication to the
             index. This must be a single file that contains both the private key and
             the PEM-encoded certificate.
+        :param bool skip_tls_check:
+            Accept TLS connection with unknown or self signed server CA
+            certificates.
         :param repository_name:
             The name of the repository (package index) to interact with. This
             should correspond to a section in the config file.
@@ -109,6 +113,7 @@ class Settings:
         self.verbose = verbose
         self.disable_progress_bar = disable_progress_bar
         self.skip_existing = skip_existing
+        self.skip_tls_check = skip_tls_check
         self._handle_repository_options(
             repository_name=repository_name,
             repository_url=repository_url,
@@ -250,6 +255,13 @@ class Settings:
             "environment variable).",
         )
         parser.add_argument(
+            "--skip-tls-check",
+            default=False,
+            action="store_true",
+            help="Accept TLS connection with unknown or self signed server CA"
+            " certificates.",
+        )
+        parser.add_argument(
             "--client-cert",
             metavar="path",
             help="Path to SSL client certificate, a single file containing the"
@@ -330,6 +342,9 @@ class Settings:
             self.password,
             self.disable_progress_bar,
         )
-        repo.set_certificate_authority(self.cacert)
+        repo.set_certificate_authority(
+            self.cacert,
+            skip_tls_check=self.skip_tls_check,
+        )
         repo.set_client_certificate(self.client_cert)
         return repo
