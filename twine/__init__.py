@@ -31,7 +31,7 @@ __copyright__ = "Copyright 2019 Donald Stufft and individual contributors"
 
 import importlib_metadata
 
-metadata = importlib_metadata.metadata("twine")
+metadata = importlib_metadata.metadata("twine-unofficial")
 
 
 __title__ = metadata["name"]
