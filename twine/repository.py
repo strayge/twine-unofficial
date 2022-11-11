@@ -109,6 +109,10 @@ class Repository:
             self.session.verify = cacert
         elif skip_tls_check:
             self.session.verify = False
+            # Disable ssl warning in urllib3
+            import urllib3.exceptions
+
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
     def set_client_certificate(self, clientcert: Optional[str]) -> None:
         if clientcert:
