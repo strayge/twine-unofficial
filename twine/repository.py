@@ -214,6 +214,7 @@ class Repository:
             # Fallback to HTML listing for PyPI servers
             # without PEP 691 (JSON API) support
 
+            from urllib.parse import urljoin
             from urllib.parse import urlparse
 
             try:
@@ -225,17 +226,30 @@ class Repository:
                 )
                 return False
 
+            def get_index_url() -> str:
+                """Get the simple URL for the current repository and package."""
+                base_url = self.url
+                if not base_url.endswith("/"):
+                    base_url += "/"
+                # PyPI uses additional postfixes for uploads, so cut them off
+                if self.url.endswith("/legacy/") or self.url.endswith("/upload/"):
+                    base_url = self.url[:-7]
+                url = urljoin(base_url, f"simple/{package.safe_name}/")
+                return url
+
             filenames = None
             if not bypass_cache:
                 filenames = self._releases_json_data.get(package.safe_name)
 
             if filenames is None:
                 filenames = {}
-                url = f"{LEGACY_PYPI}simple/{package.safe_name}/"
-                response = self.session.get(url)
+                index_url = get_index_url()
+                response = self.session.get(index_url)
+                print(f"response: {response}", response.url)
                 if response.status_code == 200:
                     links: List[Tuple[str, str]] = Page(
-                        response.text, url
+                        response.text,
+                        index_url,
                     ).links  # type: ignore[no-untyped-call]
                     for url, _ in links:
                         filename = urlparse(url).path.split("/")[-1]
