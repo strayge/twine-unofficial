@@ -131,11 +131,14 @@ def upload(upload_settings: settings.Settings, dists: List[str]) -> None:
         skip_message = (
             f"Skipping {package.basefilename} because it appears to already exist"
         )
+        existing_message = f"Package {package.basefilename} already exists"
 
         # Note: The skip_existing check *needs* to be first, because otherwise
         #       we're going to generate extra HTTP requests against a hardcoded
         #       URL for no reason.
         if upload_settings.skip_existing and repository.package_is_uploaded(package):
+            if upload_settings.fail_on_existing:
+                raise exceptions.TwineException(existing_message)
             logger.warning(skip_message)
             continue
 
@@ -155,6 +158,8 @@ def upload(upload_settings: settings.Settings, dists: List[str]) -> None:
             )
 
         if skip_upload(resp, upload_settings.skip_existing, package):
+            if upload_settings.fail_on_existing:
+                raise exceptions.TwineException(existing_message)
             logger.warning(skip_message)
             continue
 
