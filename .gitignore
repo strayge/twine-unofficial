@@ -112,3 +112,6 @@ venv.bak/
 dmypy.json
 monkeytype.sqlite3
 mypy/
+
+# OS specific
+.DS_Store
