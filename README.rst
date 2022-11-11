@@ -1,17 +1,37 @@
-.. image:: https://img.shields.io/pypi/v/twine.svg
-   :target: https://pypi.org/project/twine
+.. image:: https://img.shields.io/pypi/v/twine-unofficial.svg
+   :target: https://pypi.org/project/twine-unofficial
 
-.. image:: https://img.shields.io/pypi/pyversions/twine.svg
-   :target: https://pypi.org/project/twine
+.. image:: https://img.shields.io/pypi/pyversions/twine-unofficial.svg
+   :target: https://pypi.org/project/twine-unofficial
 
 .. image:: https://img.shields.io/readthedocs/twine
    :target: https://twine.readthedocs.io
 
-.. image:: https://img.shields.io/github/workflow/status/pypa/twine/Main
-   :target: https://github.com/pypa/twine/actions
+twine-unofficial
+================
 
-.. image:: https://img.shields.io/codecov/c/github/pypa/twine
-   :target: https://codecov.io/gh/pypa/twine
+This is a fork of the `official twine`_ project, with the following
+changes, rejected by the maintainers:
+
+- Upload command now supports ``--skip-tls-check`` option to disable
+  TLS certificate verification. This is useful for uploading to
+  repositories with self-signed certificates.
+
+  Closed issue: `#463 <https://github.com/pypa/twine/pull/463>`_,
+  rejected PR: `#387 <https://github.com/pypa/twine/issues/387>`_.
+
+Installation
+------------
+
+.. code:: shell
+
+   $ pip install twine-unofficial
+
+Versioning
+----------
+
+Fork versioning is based on the official version, with the following
+format: ``{official-version}.{fork-version}``.
 
 twine
 =====
@@ -38,6 +58,7 @@ Everyone interacting in the Twine project's codebases, issue
 trackers, chat rooms, and mailing lists is expected to follow the
 `PSF Code of Conduct`_.
 
+.. _`official twine`: https://github.com/pypa/twine
 .. _`publishing`: https://packaging.python.org/tutorials/packaging-projects/
 .. _`PyPI`: https://pypi.org
 .. _`distributions`:
