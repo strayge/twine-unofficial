@@ -20,6 +20,11 @@ changes, rejected by the maintainers:
   Closed issue: `#463 <https://github.com/pypa/twine/pull/463>`_,
   rejected PR: `#387 <https://github.com/pypa/twine/issues/387>`_.
 
+- Upload ``--skip-existing`` option now support pre-upload check
+  againts non-default PyPI repositories.
+
+  `#919 <https://github.com/pypa/twine/issues/919>`_
+
 Installation
 ------------
 
