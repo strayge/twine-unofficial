@@ -53,6 +53,7 @@ class Settings:
         comment: Optional[str] = None,
         config_file: str = utils.DEFAULT_CONFIG_FILE,
         skip_existing: bool = False,
+        fail_on_existing: bool = False,
         cacert: Optional[str] = None,
         client_cert: Optional[str] = None,
         skip_tls_check: bool = False,
@@ -87,6 +88,8 @@ class Settings:
             Specify whether twine should continue uploading files if one
             of them already exists. This primarily supports PyPI. Other
             package indexes may not be supported.
+        :param fail_on_existing:
+            Check if file already exists before upload, fail if it does.
         :param cacert:
             The path to the bundle of certificates used to verify the TLS
             connection to the package index.
@@ -112,7 +115,10 @@ class Settings:
         self.comment = comment
         self.verbose = verbose
         self.disable_progress_bar = disable_progress_bar
-        self.skip_existing = skip_existing
+        # its actually more `check_existing` than `skip_existing`,
+        # but we keep the name for backwards compatibility
+        self.skip_existing = skip_existing or fail_on_existing
+        self.fail_on_existing = fail_on_existing
         self.skip_tls_check = skip_tls_check
         self._handle_repository_options(
             repository_name=repository_name,
@@ -243,6 +249,12 @@ class Settings:
             help="Continue uploading files if one already exists. (Only valid "
             "when uploading to PyPI. Other implementations may not "
             "support this.)",
+        )
+        parser.add_argument(
+            "--fail-on-existing",
+            default=False,
+            action="store_true",
+            help="Check if file already exists before upload, fail if it does.",
         )
         parser.add_argument(
             "--cert",
