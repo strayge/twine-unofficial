@@ -4,6 +4,9 @@
 .. image:: https://img.shields.io/pypi/pyversions/twine-unofficial.svg
    :target: https://pypi.org/project/twine-unofficial
 
+.. image:: https://img.shields.io/pypi/dm/twine-unofficial
+   :target: https://pypi.org/project/twine-unofficial
+
 .. image:: https://img.shields.io/readthedocs/twine
    :target: https://twine.readthedocs.io
 
