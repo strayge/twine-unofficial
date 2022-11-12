@@ -249,7 +249,6 @@ class Repository:
                 filenames = {}
                 index_url = get_index_url()
                 response = self.session.get(index_url)
-                print(f"response: {response}", response.url)
                 if response.status_code == 200:
                     links: List[Tuple[str, str]] = Page(
                         response.text,
